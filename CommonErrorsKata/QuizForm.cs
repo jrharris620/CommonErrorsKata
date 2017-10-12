@@ -10,22 +10,27 @@ namespace CommonErrorsKata
 {
     public partial class CommonErrorsForm : Form
     {
+        private const int MinRightAnswers = 15;
+
         private readonly AnswerQueue<TrueFalseAnswer> answerQueue;
         private readonly string[] files;
         private readonly SynchronizationContext synchronizationContext;
         private int i = 100;
         private string currentBaseName = null;
         private readonly string[] possibleAnswers = null;
+        private readonly string[] fileNames = null;
 
         public CommonErrorsForm()
         {
             InitializeComponent();
             synchronizationContext = SynchronizationContext.Current;
-            files = System.IO.Directory.GetFiles(Environment.CurrentDirectory +  @"..\..\..\ErrorPics");
+            files = Directory.GetFiles(Environment.CurrentDirectory +  @"..\..\ErrorPics");
             possibleAnswers = new string[] { "Missing File", "null instance", "divide by zero" };
+            fileNames = new string[] {"object_ref.png", "object_ref_not_set.png", "divide_by_zero.png"};
+
             lstAnswers.DataSource = possibleAnswers;
-            answerQueue = new AnswerQueue<TrueFalseAnswer>(15);
-            Next();
+            answerQueue = new AnswerQueue<TrueFalseAnswer>(MinRightAnswers);
+            AskNextQuestion();
             lstAnswers.Click += LstAnswers_Click;
             StartTimer();
         }
@@ -45,15 +50,31 @@ namespace CommonErrorsKata
         private void LstAnswers_Click(object sender, EventArgs e)
         {
             i = 100;
-            var tokens = currentBaseName.Split(' ');
+            var currentImageName = currentBaseName.Split(' ').First();
+
+            var correctIndex = Array.IndexOf(fileNames, currentImageName);
+
+            if (correctIndex < 0 || correctIndex >= possibleAnswers.Length)
+            {
+                return;
+            }
+
+            var correctAnswer = possibleAnswers[correctIndex];
+
+            Console.WriteLine(sender);
+
+            var isCorrectAnswer = lstAnswers.SelectedItem.ToString() == correctAnswer;
+            answerQueue.Enqueue(new TrueFalseAnswer(isCorrectAnswer));
+
+
             //TODO:  Figure out what is a valid answer.
             answerQueue.Enqueue(new TrueFalseAnswer(true));
-            Next();
+            AskNextQuestion();
         }
 
-        private void Next()
+        private void AskNextQuestion()
         {
-            if (answerQueue.Count == 15 && answerQueue.Grade >= 98)
+            if (answerQueue.Count == MinRightAnswers && answerQueue.Grade >= 98)
             {
                 MessageBox.Show("Congratulations you've defeated me!");
                 Application.Exit();

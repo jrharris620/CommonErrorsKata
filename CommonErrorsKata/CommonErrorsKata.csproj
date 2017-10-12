@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="QuizForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -55,6 +58,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="obj\Debug\CommonErrorsKata.CommonErrorsForm.resources" />
+    <EmbeddedResource Include="obj\Debug\CommonErrorsKata.Properties.Resources.resources" />
     <EmbeddedResource Include="QuizForm.resx">
       <DependentUpon>QuizForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -67,6 +72,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="bin\Debug\CommonErrorsKata.exe.config" />
+    <None Include="obj\Debug\CommonErrorsKata.csproj.CopyComplete" />
+    <None Include="obj\Debug\CommonErrorsKata.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\CommonErrorsKata.csproj.GenerateResource.Cache" />
+    <None Include="obj\Debug\CommonErrorsKata.csprojResolveAssemblyReference.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -81,13 +93,25 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ErrorPics\" />
+    <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonErrors.Shared\CommonErrors.Shared.csproj">
       <Project>{bb0caba6-7c36-402e-834d-0e99c28d2317}</Project>
       <Name>CommonErrors.Shared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\CommonErrors.Shared.dll" />
+    <Content Include="bin\Debug\CommonErrors.Shared.pdb" />
+    <Content Include="bin\Debug\CommonErrorsKata.exe" />
+    <Content Include="bin\Debug\CommonErrorsKata.pdb" />
+    <Content Include="ErrorPics\divide_by_zero.png" />
+    <Content Include="ErrorPics\object_ref.png" />
+    <Content Include="ErrorPics\object_ref_not_set.png" />
+    <Content Include="obj\Debug\CommonErrorsKata.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\CommonErrorsKata.exe" />
+    <Content Include="obj\Debug\CommonErrorsKata.pdb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
