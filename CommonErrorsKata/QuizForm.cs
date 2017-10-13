@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,19 +18,19 @@ namespace CommonErrorsKata
         private readonly string[] files;
         private readonly SynchronizationContext synchronizationContext;
         private int currentProgressPercent = 100;
-        private string currentBaseName = null;
-        private readonly string[] possibleAnswers = null;
-        private readonly string[] fileNames = null;
+        private string currentImageFileName = null;
+        private readonly string[] fileNames;
 
         public CommonErrorsForm()
         {
             InitializeComponent();
             synchronizationContext = SynchronizationContext.Current;
-            files = Directory.GetFiles(Environment.CurrentDirectory +  @"..\..\ErrorPics");
-            possibleAnswers = new string[] { "Missing File", "null instance", "divide by zero" };
-            fileNames = new string[] {"object_ref.png", "object_ref_not_set.png", "divide_by_zero.png"};
+            files = Directory.GetFiles(Environment.CurrentDirectory +  @".\..\..\ErrorPics");
 
-            lstAnswers.DataSource = possibleAnswers;
+            
+            fileNames = files.Select(file=> Path.GetFileName(file)).ToArray();
+
+            lstAnswers.DataSource = fileNames.Select(element => element.Replace(".png","")).ToList();
             answerQueue = new AnswerQueue<TrueFalseAnswer>(MinRightAnswers);
             AskNextQuestion();
             lstAnswers.Click += LstAnswers_Click;
@@ -50,27 +52,16 @@ namespace CommonErrorsKata
         private void LstAnswers_Click(object sender, EventArgs e)
         {
             currentProgressPercent = 100;
-            var currentImageName = currentBaseName.Split(' ').First();
-
-            var correctIndex = Array.IndexOf(fileNames, currentImageName);
-
-            if (correctIndex < 0 || correctIndex >= possibleAnswers.Length) { return; }
-
-            var correctAnswer = possibleAnswers[correctIndex];
-
-            Console.WriteLine(sender);
-
-            var isCorrectAnswer = lstAnswers.SelectedItem.ToString() == possibleAnswers[correctIndex];
+            
+            var isCorrectAnswer = currentImageFileName.Replace(".png", "") == lstAnswers.SelectedItem.ToString();
             answerQueue.Enqueue(new TrueFalseAnswer(isCorrectAnswer));
-
-            //TODO:  Figure out what is a valid answer.
-            answerQueue.Enqueue(new TrueFalseAnswer(true));
+            
             AskNextQuestion();
         }
 
         private void AskNextQuestion()
         {
-            if (answerQueue.Count == MinRightAnswers && answerQueue.Grade >= 98)
+            if (answerQueue.Count >= MinRightAnswers && answerQueue.Grade >= 98)
             {
                 MessageBox.Show("Congratulations you've defeated me!");
                 Application.Exit();
@@ -78,7 +69,7 @@ namespace CommonErrorsKata
             }
             label1.Text = answerQueue.Grade + "%";
             var file = files.GetRandom();
-            currentBaseName= Path.GetFileName(file);
+            currentImageFileName = Path.GetFileName(file);
             pbImage.ImageLocation = file;
         }
 
@@ -98,6 +89,11 @@ namespace CommonErrorsKata
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void CommonErrorsForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

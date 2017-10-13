@@ -6,5 +6,6 @@
         /// The grade for the answer
         /// </summary>
         decimal Grade { get; }
+
     }
 }

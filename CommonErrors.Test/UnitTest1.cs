@@ -61,6 +61,24 @@ namespace CommonErrors.Test
             Assert.AreEqual(50, grade);
         }
 
+        [TestFixture]
         public class CommonAnswerTestFixture
+        {
+            [Test]
+            public void ShouldOnlyAllowBetweenZeroAndOneHundred()
+            {
+                var answer = new CommonAnswer();
+
+                Assert.Throws<InvalidGradeException>(() =>
+                {
+                    answer.Grade = -1;
+                });
+
+                Assert.Throws<InvalidGradeException>(() =>
+                {
+                    answer.Grade = 101;
+                });
+            }
+        }
     }
 }
