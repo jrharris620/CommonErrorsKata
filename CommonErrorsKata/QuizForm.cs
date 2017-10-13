@@ -15,7 +15,7 @@ namespace CommonErrorsKata
         private readonly AnswerQueue<TrueFalseAnswer> answerQueue;
         private readonly string[] files;
         private readonly SynchronizationContext synchronizationContext;
-        private int i = 100;
+        private int currentProgressPercent = 100;
         private string currentBaseName = null;
         private readonly string[] possibleAnswers = null;
         private readonly string[] fileNames = null;
@@ -38,9 +38,9 @@ namespace CommonErrorsKata
         {
             await Task.Run(() =>
             {
-                for (i = 100; i > 0; i--)
+                for (currentProgressPercent = 100; currentProgressPercent > 0; currentProgressPercent--)
                 {
-                    UpdateProgress(i);
+                    UpdateProgress(currentProgressPercent);
                     Thread.Sleep(50);
                 }
                 Message("Need to be quicker on your feet next time!  Try again...");
@@ -49,23 +49,19 @@ namespace CommonErrorsKata
 
         private void LstAnswers_Click(object sender, EventArgs e)
         {
-            i = 100;
+            currentProgressPercent = 100;
             var currentImageName = currentBaseName.Split(' ').First();
 
             var correctIndex = Array.IndexOf(fileNames, currentImageName);
 
-            if (correctIndex < 0 || correctIndex >= possibleAnswers.Length)
-            {
-                return;
-            }
+            if (correctIndex < 0 || correctIndex >= possibleAnswers.Length) { return; }
 
             var correctAnswer = possibleAnswers[correctIndex];
 
             Console.WriteLine(sender);
 
-            var isCorrectAnswer = lstAnswers.SelectedItem.ToString() == correctAnswer;
+            var isCorrectAnswer = lstAnswers.SelectedItem.ToString() == possibleAnswers[correctIndex];
             answerQueue.Enqueue(new TrueFalseAnswer(isCorrectAnswer));
-
 
             //TODO:  Figure out what is a valid answer.
             answerQueue.Enqueue(new TrueFalseAnswer(true));
@@ -80,7 +76,7 @@ namespace CommonErrorsKata
                 Application.Exit();
                 return;
             }
-            label1.Text = answerQueue.Grade.ToString() + "%";
+            label1.Text = answerQueue.Grade + "%";
             var file = files.GetRandom();
             currentBaseName= Path.GetFileName(file);
             pbImage.ImageLocation = file;

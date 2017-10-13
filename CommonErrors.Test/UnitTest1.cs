@@ -9,7 +9,7 @@ using CommonErrorsKata.Shared;
 namespace CommonErrors.Test
 {
     [TestFixture]
-    public class UnitTest1
+    public class AnswerQueueTestFixture
     {
         [Test]
         public void ShouldOnlyAllowTenAnswers()
@@ -60,5 +60,7 @@ namespace CommonErrors.Test
             //Assert
             Assert.AreEqual(50, grade);
         }
+
+        public class CommonAnswerTestFixture
     }
 }
