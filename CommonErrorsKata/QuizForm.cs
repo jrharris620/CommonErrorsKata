@@ -25,7 +25,7 @@ namespace CommonErrorsKata
         {
             InitializeComponent();
             synchronizationContext = SynchronizationContext.Current;
-            files = Directory.GetFiles(Environment.CurrentDirectory +  @".\..\..\ErrorPics");
+            files = Directory.GetFiles(Environment.CurrentDirectory +  @"..\..\..\ErrorPics");
 
             
             fileNames = files.Select(file=> Path.GetFileName(file)).ToArray();
